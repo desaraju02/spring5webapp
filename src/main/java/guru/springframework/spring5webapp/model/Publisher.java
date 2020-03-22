@@ -5,16 +5,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Author {
+public class Publisher {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private String firstName;
-    private String lastName;
-
-    @ManyToMany(mappedBy = "authors")
-    private Set<Book> books = new HashSet<>();
+    private String name;
+    private String address;
 
     public Set<Book> getBooks() {
         return books;
@@ -24,13 +21,13 @@ public class Author {
         this.books = books;
     }
 
-    public Author(String firstName, String lastName) {
+    @OneToMany
+    @JoinColumn(name = "publisher_id")
+    private Set<Book> books = new HashSet<>();
 
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-
-    public Author() {
+    public Publisher(String name, String address) {
+        this.name = name;
+        this.address = address;
     }
 
     public long getId() {
@@ -41,20 +38,24 @@ public class Author {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getAddress() {
+        return address;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Publisher() {
+
     }
 
     @Override
@@ -62,9 +63,9 @@ public class Author {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Author author = (Author) o;
+        Publisher publisher = (Publisher) o;
 
-        return id == author.id;
+        return id == publisher.id;
 
     }
 
@@ -75,10 +76,10 @@ public class Author {
 
     @Override
     public String toString() {
-        return "Author{" +
+        return "Publisher{" +
                 "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                 '}';
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                '}';
     }
 }
